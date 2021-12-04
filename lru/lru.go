@@ -10,6 +10,8 @@ type Cache struct {
 
 	ll *list.List
 	cache map[interface{}]*list.Element
+
+	OnEvicted func(key Key,value interface{})
 }
 
 type Key interface {}
@@ -43,7 +45,7 @@ func (c *Cache)Add(key Key,value interface{})  {
 	c.cache[key] = el
 	//todo  remove the oldest data from list
 	if c.Maxlength > 0 && c.ll.Len() > c.Maxlength{
-		
+		c.DelOldest()
 	}
 }
 
@@ -54,7 +56,29 @@ func (c *Cache)Del(key Key)  {
 	}
 
 	//todo remove data from list and cach
-	if _,hit := c.cache[key];hit{
+	if ele,hit := c.cache[key];hit{
+		c.delElement(ele)
+	}
+}
 
+//delete oldest item
+func (c *Cache)DelOldest()  {
+	if c.cache == nil{
+		return
+	}
+	ele := c.ll.Back()
+	if ele != nil{
+		c.delElement(ele)
+	}
+}
+
+func (c *Cache)delElement(e *list.Element)  {
+	//delete list
+	c.ll.Remove(e)
+	//delete  cach
+	kv := e.Value.(*entry)
+	delete(c.cache,e.Value.(*entry).key)
+	if c.OnEvicted != nil {
+		c.OnEvicted(kv.key, kv.value)
 	}
 }

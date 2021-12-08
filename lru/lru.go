@@ -49,6 +49,15 @@ func (c *Cache)Add(key Key,value interface{})  {
 	}
 }
 
+func (c *Cache)Get(key Key)(value interface{},exist bool)  {
+	if ele,ok := c.cache[key];ok{
+		c.ll.MoveToFront(ele)
+		value := ele.Value.(*entry)
+		return value.value,true
+	}
+	return
+}
+
 func (c *Cache)Del(key Key)  {
 	//remove value in cache
 	if c.cache == nil{

@@ -9,12 +9,13 @@ const (
 	DEL
 )
 
+//Entry 单位指标
 type Entry struct {
 	Key       []byte
 	Value     []byte
-	KeySize   uint32
-	ValueSize uint32
-	Mark	  uint16
+	KeySize   uint32 //key 长度，单为字节
+	ValueSize uint32 //value，单位字节
+	Mark	  uint16 //Put写入，DEL删除
 }
 
 func NewEntry(key, value []byte, mark uint16) *Entry {
@@ -27,11 +28,12 @@ func NewEntry(key, value []byte, mark uint16) *Entry {
 	}
 }
 
+// GetSize 获取 Entry的总长
 func (e *Entry) GetSize() int64 {
 	return int64(entryHeaderSize + e.KeySize + e.ValueSize)
 }
 
-// Encode 编码 Entry，返回字节数组
+// Encode 编码 Entry，返回字节数组,用于磁盘存储
 func (e *Entry) Encode() ([]byte, error) {
 	buf := make([]byte, e.GetSize())
 	binary.BigEndian.PutUint32(buf[0:4], e.KeySize)

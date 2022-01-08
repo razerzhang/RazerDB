@@ -36,9 +36,11 @@ func (e *Entry) GetSize() int64 {
 // Encode 编码 Entry，返回字节数组,用于磁盘存储
 func (e *Entry) Encode() ([]byte, error) {
 	buf := make([]byte, e.GetSize())
+	//添加header
 	binary.BigEndian.PutUint32(buf[0:4], e.KeySize)
 	binary.BigEndian.PutUint32(buf[4:8], e.ValueSize)
 	binary.BigEndian.PutUint16(buf[8:10], e.Mark)
+	//添加content
 	copy(buf[entryHeaderSize:entryHeaderSize+e.KeySize], e.Key)
 	copy(buf[entryHeaderSize+e.KeySize:], e.Value)
 	return buf, nil

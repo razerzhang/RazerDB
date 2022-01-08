@@ -39,7 +39,7 @@ func Open(dirPath string) (*MiniDB, error) {
 	return db, nil
 }
 
-// Merge 合并数据文件，在rosedb当中是 Reclaim 方法
+// Merge 合并数据文件， Reclaim 方法
 func (db *MiniDB) Merge() error {
 	// 没有数据，忽略
 	if db.dbFile.Offset == 0 {

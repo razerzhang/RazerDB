@@ -1,9 +1,11 @@
 package storage
 
-import "os"
+import (
+	"os"
+)
 
-const FileName = "minidb.data"
-const MergeFileName = "minidb.data.merge"
+const FileName = "razerdb.data"
+const MergeFileName = "razerdb.data.merge"
 
 // DBFile 数据文件定义
 type DBFile struct {

@@ -23,6 +23,7 @@ func New(replicas int, fn Hash) *Ring{
 		replicas: replicas,
 		hashmap: make(map[int]string),
 	}
+
 	if r.hash == nil{
 		r.hash = crc32.ChecksumIEEE
 	}

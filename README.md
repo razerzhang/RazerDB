@@ -1,2 +1,2 @@
 # RazerDB
-RazerDB is a key-value database
+RazerDB is a distributional key-value database based on raft
